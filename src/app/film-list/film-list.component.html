@@ -1,0 +1,38 @@
+<app-top-bar [barTitle]="'Fase de Seleção'" [barDescription]="'Selecione 8 filmes que você deseja que entrem na competição e depois pressione o botão Gerar Meu Campeonato para prosseguir.'"></app-top-bar>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-sm-4 col-xs-6">
+			<h5>Selecionados <span class="badge badge-secondary">{{getSelectedSize()}}</span> de 8 filmes</h5>
+		</div>
+		<div class="col-md-4 col-sm-4">
+		</div>
+		<div class="col-md-4 col-sm-4 d-flex flex-row-reverse">
+			<button class="btn btn-info" (click)="startTournament()">
+         Gerar Meu Campeonato
+      </button>
+		</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-12 col-12" *ngFor="let film of films">
+				<div class="film-box row">
+					<div class=" align-self-center col-md-2 col-sm-1 col-1">
+						<input type="checkbox" (change)="onChange(film.id, $event.target.checked)" [disabled]="disableCheck(film.id)">
+        </div>
+						<div class="align-self-center col-md-10 col-sm-11 col-11">
+							<h6>
+								<a [title]="film.titulo">
+									{{ film.titulo }}
+								</a>
+							</h6>
+							<p *ngIf="film.ano">
+								Ano: {{ film.ano }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
