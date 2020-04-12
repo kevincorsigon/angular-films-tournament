@@ -1,24 +1,21 @@
 <app-top-bar [barTitle]="'Resultado Final'" [barDescription]="'Veja o resultado final do campeonato de forma simples e rápida.'"></app-top-bar>
 
-
 <div class="container">
 	<div class="input-group">
 		<div class="input-group-prepend">
-			<span class="input-group-text">1º</span>
+			<span class="input-group-text">1º Colocado</span>
 		</div>
 		<li class="list-group-item">{{tournamentResult.campeao.titulo}}</li>
 	</div>
 	<br>
 	<div class="input-group">
 		<div class="input-group-prepend">
-			<span class="input-group-text">2º</span>
+			<span class="input-group-text">2º Colocado</span>
 		</div>
 		<li class="list-group-item">{{tournamentResult.viceCampeao.titulo}}</li>
 	</div>
-
 	<br>
 	<hr>
-
 	<a class="bar-title d-flex flex-row-reverse" [routerLink]="['/']">
 		<h6>Novo Campeonato</h6>
 	</a>
