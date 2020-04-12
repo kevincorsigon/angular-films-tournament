@@ -2,7 +2,7 @@
 
 [Criado por Kevin Corsini Gonçalves](https://www.linkedin.com/in/kevin-corsini-gon%C3%A7alves-0952a36b/)
 
-Para executar bata rodar:
+Para executar basta rodar:
 
 Para instalar as dependencias:
 
