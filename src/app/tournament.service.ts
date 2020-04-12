@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Film } from "./film";
+import { ReponseWrapper } from "./reponseWrapper";
+import { TournamentResult } from "./tournamentResult";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class TournamentService {
 
   selectedFilms = [];
-  tournamentResult = {};
+  tournamentResult : TournamentResult;
 
   constructor(
        private http: HttpClient
@@ -26,16 +30,29 @@ export class TournamentService {
     return this.selectedFilms;
   }
 
+  getLastTournamentResults() :TournamentResult  {
+    return this.tournamentResult;
+  }
+
   clearSelectedFilms() {
     this.selectedFilms = [];
     return this.selectedFilms;
   }
 
-  getParticipantFilms() {    
-    return this.http.get('https://copafilmes.azurewebsites.net/api/filmes');
+  getParticipantFilms() : Observable<ReponseWrapper<Film[]>>  {    
+    return this.http.get<ReponseWrapper<Film[]>>('http://localhost:53656/api/Filme');
   }
 
-  completeTournament(){
-    //Post api 
+  completeTournament(actionOnSuccess, actionOnError){
+    return this.http.post<ReponseWrapper<TournamentResult>>('http://localhost:53656/api/Campeonato', { filmes : this.getSelectedFilms() })
+    .subscribe(
+        data  => {          
+            this.tournamentResult = data.result;
+            actionOnSuccess();
+        },
+        errorResponse  => {    
+          actionOnError(errorResponse.error);
+        }    
+    );
   }
 }

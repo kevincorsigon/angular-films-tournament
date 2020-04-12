@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TournamentService } from "../tournament.service";
-import { mockFilmList } from "../mockFilmList";
+import { Film } from "../film";
 
 @Component({
   selector: "app-film-list",
@@ -9,7 +9,7 @@ import { mockFilmList } from "../mockFilmList";
   styleUrls: ["./film-list.component.css"]
 })
 export class FilmListComponent implements OnInit {
-  films = mockFilmList;
+  films : Film[];
 
   constructor(
     private route: Router,
@@ -17,7 +17,11 @@ export class FilmListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.films = mockFilmList; //this.tournamentService.getParticipantFilms();
+    this.tournamentService.getParticipantFilms().subscribe(response => {      
+      if(response.status === 200){
+        this.films = response.result;
+      }   
+    });
   }
 
   getSelectedSize() {
@@ -48,19 +52,27 @@ export class FilmListComponent implements OnInit {
     return true;
   }
 
-  addToList(film) {
+  addToList(film: Film) {
     this.tournamentService.addToSelectedFilms(film);
   }
 
-  removeFromList(film) {
+  removeFromList(film: Film) {
     this.tournamentService.removeFromSelectedFilms(film);
   }
 
   startTournament() {
     if (this.getSelectedSize() == 8) {
+      let self = this;
       window.alert("Campeonato iniciado, verificando finalistas...");
-      this.tournamentService.clearSelectedFilms();
-      this.route.navigate(["/results"]);
+      this.tournamentService.completeTournament(()=>{
+        self.tournamentService.clearSelectedFilms();
+        self.route.navigate(["/results"]);
+      }, 
+      (msg)=>{
+        window.alert(
+         'Ocorreu um erro: ' + msg
+        );
+      });      
     } else {
       window.alert(
         "É necessário escolher 8 filmes para iniciar um campeonato!"

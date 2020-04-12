@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { TournamentService } from "../tournament.service";
+import { TournamentResult } from "../tournamentResult";
 
 @Component({
   selector: 'app-tournament-result',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TournamentResultComponent implements OnInit {
 
-  constructor() { }
+  tournamentResult : TournamentResult;
 
-  ngOnInit() {
+  constructor(
+    private route: Router,
+    private tournamentService: TournamentService
+  ) { }
+
+  ngOnInit() {    
+    this.tournamentResult = this.tournamentService.getLastTournamentResults();
+    if(!this.tournamentResult){
+      this.route.navigate(["/"]);
+    }
   }
 
 }
